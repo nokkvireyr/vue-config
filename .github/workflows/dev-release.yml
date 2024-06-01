@@ -1,6 +1,7 @@
 name: Publish package to GitHub Packages
 on:
   push:
+    branches: ['*']
     branches-ignore:
       - 'main'
     # Publish semver tags as releases.
