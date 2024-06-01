@@ -1,0 +1,51 @@
+name: Publish package to GitHub Packages
+on:
+  push:
+    branches-ignore:
+      - 'main'
+    # Publish semver tags as releases.
+    tags: ['v*.*.*']
+
+jobs:
+  # Push the pacakge.json version to a variable
+  package-version:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          node-version: '20.x'
+      - name: Get package version
+        id: package-version
+        run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
+      - name: Echo package version
+        run: echo "${{ steps.package-version.outputs.version }}"
+    outputs:
+      version: ${{ steps.package-version.outputs.version }}
+  build:
+    needs: package-version
+    if: contains(needs.package-version.outputs.version, '-dev')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      # - name: Echo package version
+      #   run: echo "${{ needs.package-version.outputs.version }}"
+      - uses: actions/checkout@v3
+      # Setup .npmrc file to publish to GitHub Packages
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '20.x'
+          registry-url: 'https://npm.pkg.github.com'
+          # Defaults to the user or organization that owns the workflow file
+          scope: '@nokkvireyr'
+      - run: 'npm ci --ignore-scripts'
+        env:
+          NODE_AUTH_TOKEN: ${{ github.token }}
+      - run: npm run build
+      - run: npm publish --tag dev
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
