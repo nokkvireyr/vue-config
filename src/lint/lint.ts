@@ -13,10 +13,9 @@ export type Rules = Record<
 >;
 
 export const esLintConfig = ({
-  tsconfigs = ['./tsconfig.json'] as string[],
   globals = {} as Record<string, 'readonly' | 'writable'>,
   rules = {} as Rules,
-}) =>
+} = {}) =>
   tseslint.config(
     eslint.configs.recommended,
     ...tseslint.configs.recommended,
@@ -29,9 +28,6 @@ export const esLintConfig = ({
       languageOptions: {
         parserOptions: {
           parser: tseslint.parser,
-          project: tsconfigs,
-          extraFileExtensions: ['.vue'],
-          sourceType: 'module',
         },
       },
     },
@@ -56,11 +52,11 @@ export const esLintConfig = ({
         'vue/multi-word-component-names': 'off',
         'prefer-const': 'error',
         'vue/camelcase': 'error',
-        camelcase: 'error',
         'vue/attribute-hyphenation': ['error', 'never'],
         'vue/custom-event-name-casing': ['error', 'camelCase'],
         'vue/v-on-event-hyphenation': ['error', 'never', { autofix: true }],
         '@typescript-eslint/ban-ts-comment': 'off',
+        '@typescript-eslint/no-explicit-any': 'off',
         'vue/html-self-closing': [
           'warn',
           {
