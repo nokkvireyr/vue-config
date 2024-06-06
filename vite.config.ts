@@ -13,18 +13,9 @@ export default defineConfig({
     rollupOptions: {
       // make sure to externalize deps that shouldn't be bundled
       // into your library
-      external: [
-        ...Object.keys(packageJson.peerDependencies).map((key) => new RegExp(`/${key}\/.*/`)),
-        ...Object.keys(packageJson.peerDependencies),
-      ],
-      output: {
-        // Provide global variables to use in the UMD build
-        // for externalized deps
-        globals: {
-          vue: 'Vue',
-          'vue-i18n': 'VueI18n',
-        },
-      },
+      external: Object.keys(packageJson.peerDependencies).map(
+        (key) => new RegExp(`/${key}(\/.*|$)/`)
+      ),
     },
   },
 });
