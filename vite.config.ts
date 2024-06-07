@@ -14,7 +14,7 @@ export default defineConfig({
       // make sure to externalize deps that shouldn't be bundled
       // into your library
       external: Object.keys(packageJson.peerDependencies).map(
-        (key) => new RegExp(`/${key}(\/.*|$)/`)
+        (key) => new RegExp(`^${key}(/.*|$)`)
       ),
     },
   },
