@@ -14,7 +14,9 @@ export const eslintConfig = ({
   rules = {} as Rules,
 } = {}) =>
   tseslint.config(
+    // @ts-ignore
     eslint.configs.recommended,
+    tseslint.configs.recommended,
     {
       extends: [
         eslint.configs.recommended,
