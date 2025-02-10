@@ -1,9 +1,6 @@
-// @ts-ignore
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
-// @ts-ignore
 import pluginVue from 'eslint-plugin-vue';
-// @ts-ignore
 import eslintConfigPrettier from 'eslint-config-prettier';
 
 export type OptionRules = 'off' | 'warn' | 'error' | 'never';
@@ -12,23 +9,28 @@ export type Rules = Record<
   Omit<OptionRules, 'never'> | (OptionRules | Record<string, unknown>)[]
 >;
 
-export const esLintConfig = ({
+export const eslintConfig = ({
   globals = {} as Record<string, 'readonly' | 'writable'>,
   rules = {} as Rules,
 } = {}) =>
   tseslint.config(
     eslint.configs.recommended,
-    ...tseslint.configs.recommended,
-    ...pluginVue.configs['flat/recommended'],
     {
-      // @ts-ignore
-      plugins: {
-        'typescript-eslint': tseslint.plugin,
-      },
+      extends: [
+        eslint.configs.recommended,
+        ...tseslint.configs.recommended,
+        ...pluginVue.configs['flat/recommended'],
+      ],
+      files: ['**/*.{ts,vue}'],
       languageOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
         parserOptions: {
           parser: tseslint.parser,
         },
+      },
+      rules: {
+        // your rules
       },
     },
     eslintConfigPrettier,

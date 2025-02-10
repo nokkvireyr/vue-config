@@ -6,6 +6,7 @@
     "sourceMap": true,
     "declarationDir": "./dist/types",
     "emitDeclarationOnly": true,
+    "preserveSymlinks": true,
     "forceConsistentCasingInFileNames": true,
     "moduleResolution": "node",
     "isolatedModules": true,
