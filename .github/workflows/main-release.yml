@@ -43,8 +43,9 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 22
+          registry-url: 'https://registry.npmjs.org'
       - run: 'pnpm install --frozen-lockfile'
       - run: pnpm build
-      - run: pnpm publish
+      - run: npm publish --provenance --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NODE_TOKEN }}
