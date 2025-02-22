@@ -1,8 +1,8 @@
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
 import pluginVue from 'eslint-plugin-vue';
+import gb from 'globals';
 import eslintConfigPrettier from 'eslint-config-prettier';
-
 export type OptionRules = 'off' | 'warn' | 'error' | 'never';
 export type Rules = Record<
   string,
@@ -12,36 +12,28 @@ export type Rules = Record<
 export const eslintConfig = ({
   globals = {} as Record<string, 'readonly' | 'writable'>,
   rules = {} as Rules,
+  ignores = [] as string[],
 } = {}) =>
   tseslint.config(
     // @ts-ignore
-    eslint.configs.recommended,
-    tseslint.configs.recommended,
+    { ignores: ['**/dist', ...ignores] },
     {
       extends: [
         eslint.configs.recommended,
         ...tseslint.configs.recommended,
         ...pluginVue.configs['flat/recommended'],
       ],
-      files: ['**/*.{ts,vue}'],
+      files: ['**/*.{ts,vue,js}'],
       languageOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
+        globals: { ...gb.browser, ...globals },
         parserOptions: {
           parser: tseslint.parser,
         },
       },
       rules: {
-        // your rules
-      },
-    },
-    eslintConfigPrettier,
-    {
-      languageOptions: {
-        globals: globals,
-      },
-      rules: {
-        'no-console': 'warn',
+        'no-console': ['warn', { allow: ['warn', 'error'] }],
         'no-debugger': 'warn',
         'no-unused-vars': 'off',
         '@typescript-eslint/no-unused-vars': [
@@ -74,5 +66,6 @@ export const eslintConfig = ({
         ],
         ...rules,
       },
-    }
+    },
+    eslintConfigPrettier
   );

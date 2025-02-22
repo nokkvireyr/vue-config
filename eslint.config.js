@@ -1,2 +1,2 @@
-import { esLintConfig } from './dist/main.js';
-export default esLintConfig();
+import { eslintConfig } from './dist/main.js';
+export default eslintConfig();
