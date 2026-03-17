@@ -34,6 +34,7 @@ jobs:
     permissions:
       contents: read
       packages: write
+      id-token: write
     steps:
       # - name: Echo package version
       #   run: echo "${{ needs.package-version.outputs.version }}"
@@ -50,4 +51,4 @@ jobs:
           registry-url: "https://registry.npmjs.org"
       - run: "pnpm install --frozen-lockfile"
       - run: pnpm build
-      - run: npm publish --access public
+      - run: npm publish --access public --provenance
