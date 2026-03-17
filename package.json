@@ -1,6 +1,6 @@
 {
   "name": "@nokkvireyr/vue-config",
-  "version": "1.2.0",
+  "version": "2.0.0",
   "description": "",
   "main": "dist/main.js",
   "type": "module",
@@ -12,7 +12,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc -P ./tsconfig.decleration.json && vite build",
-    "lint": "eslint src/**/*.{ts,tsx,vue}"
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix"
   },
   "keywords": [],
   "author": "",
@@ -21,12 +22,53 @@
     "@eslint/js": ">=9.0.0",
     "eslint": ">=9.0.0",
     "eslint-config-prettier": ">=10.0.0",
+    "eslint-plugin-oxlint": ">=0.0.0",
     "eslint-plugin-vue": ">=9.0.0",
     "globals": ">=14.0.0",
+    "oxfmt": ">=0.4.0",
+    "oxlint": ">=1.0.0",
     "prettier": ">=3.0.0",
     "prettier-plugin-tailwindcss": ">=0.6.0",
     "typescript-eslint": ">=8.0.0",
     "vue-eslint-parser": "^9.4.3"
+  },
+  "peerDependenciesMeta": {
+    "@eslint/js": {
+      "optional": true
+    },
+    "eslint": {
+      "optional": true
+    },
+    "eslint-config-prettier": {
+      "optional": true
+    },
+    "eslint-plugin-oxlint": {
+      "optional": true
+    },
+    "eslint-plugin-vue": {
+      "optional": true
+    },
+    "globals": {
+      "optional": true
+    },
+    "oxfmt": {
+      "optional": true
+    },
+    "oxlint": {
+      "optional": true
+    },
+    "prettier": {
+      "optional": true
+    },
+    "prettier-plugin-tailwindcss": {
+      "optional": true
+    },
+    "typescript-eslint": {
+      "optional": true
+    },
+    "vue-eslint-parser": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@eslint/js": "^9.20.0",
@@ -34,13 +76,17 @@
     "@types/node": "^20.13.0",
     "eslint": "^9.20.0",
     "eslint-config-prettier": "^10.0.1",
+    "eslint-plugin-oxlint": "^0.18.0",
     "eslint-plugin-vue": "^9.32.0",
     "globals": "^16.0.0",
+    "oxfmt": "^0.41.0",
+    "oxlint": "^1.56.0",
+    "oxlint-tsgolint": "^0.17.0",
     "prettier": "^3.5.0",
     "prettier-plugin-tailwindcss": "^0.6.11",
     "typescript": "^5.4.5",
     "typescript-eslint": "^8.24.1",
-    "vite": "^5.2.12",
+    "vite": "^8.0.0",
     "vue-eslint-parser": "^9.4.3"
   }
 }

@@ -10,9 +10,7 @@ export default defineConfig({
       fileName: 'main',
       formats: ['es'],
     },
-    rollupOptions: {
-      // make sure to externalize deps that shouldn't be bundled
-      // into your library
+    rolldownOptions: {
       external: Object.keys(packageJson.peerDependencies).map(
         (key) => new RegExp(`^${key}(/.*|$)`)
       ),
