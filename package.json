@@ -2,6 +2,10 @@
   "name": "@nokkvireyr/vue-config",
   "version": "2.0.0",
   "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nokkvireyr/vue-config"
+  },
   "main": "dist/main.js",
   "type": "module",
   "module": "dist/main.js",
