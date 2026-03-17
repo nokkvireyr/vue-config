@@ -3,16 +3,26 @@ import tseslint from 'typescript-eslint';
 import pluginVue from 'eslint-plugin-vue';
 import gb from 'globals';
 import eslintConfigPrettier from 'eslint-config-prettier';
+import type { Linter } from 'eslint';
+
 export type OptionRules = 'off' | 'warn' | 'error' | 'never';
 export type Rules = Record<
   string,
   Omit<OptionRules, 'never'> | (OptionRules | Record<string, unknown>)[]
 >;
 
+/** Pass the imported `eslint-plugin-oxlint` module to disable rules already covered by oxlint. */
+type OxlintPlugin = {
+  configs: Record<string, Linter.Config>;
+  buildFromOxlintConfigFile?: (path: string) => Linter.Config[];
+  buildFromOxlintConfig?: (config: Record<string, unknown>) => Linter.Config[];
+};
+
 export const eslintConfig = ({
   globals = {} as Record<string, 'readonly' | 'writable'>,
   rules = {} as Rules,
   ignores = [] as string[],
+  oxlintPlugin = undefined as OxlintPlugin | undefined,
 } = {}) =>
   tseslint.config(
     // @ts-ignore
@@ -67,5 +77,6 @@ export const eslintConfig = ({
         ...rules,
       },
     },
-    eslintConfigPrettier
+    eslintConfigPrettier,
+    ...(oxlintPlugin ? [oxlintPlugin.configs['flat/recommended']] : [])
   );
