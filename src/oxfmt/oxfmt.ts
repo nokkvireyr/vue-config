@@ -1,14 +1,5 @@
-import { OxfmtConfig } from 'oxfmt';
-
-/**
- * Returns an oxfmt config object to spread into `defineConfig()` in your `oxfmt.config.ts`.
- *
- * @example
- * // oxfmt.config.ts
- * import { defineConfig } from 'oxfmt';
- * import { oxfmtConfig } from '@nokkvireyr/vue-config';
- * export default defineConfig(oxfmtConfig());
- */
+import { defineConfig } from 'oxfmt';
+type OxfmtConfig = Parameters<typeof defineConfig>[0];
 export const oxfmtConfig = (overrides: OxfmtConfig = {}): OxfmtConfig => ({
   semi: true,
   tabWidth: 2,
