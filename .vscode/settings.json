@@ -1,5 +1,4 @@
 {
-  "recommendations": ["oxc.oxc-vscode"],
   "editor.codeActionsOnSave": {
     "source.fixAll.oxc": "always",
     "source.fixAll.eslint": "never",

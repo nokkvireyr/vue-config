@@ -1,4 +1,5 @@
-import { OxlintConfig } from 'oxlint';
+import type { OxlintConfig } from 'oxlint';
+export type { OxlintConfig } from 'oxlint';
 
 type OxlintPlugins = OxlintConfig['plugins'];
 type RuleCategories = OxlintConfig['categories'];
@@ -23,7 +24,7 @@ export const oxlintConfig = ({
     ...categories,
   },
   rules: {
-    'no-console': 'warn',
+    'no-console': ['warn', { allow: ['warn', 'error'] }],
     'no-debugger': 'warn',
     'prefer-const': 'error',
     'typescript/no-unused-vars': [
