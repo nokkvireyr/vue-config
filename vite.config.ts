@@ -6,8 +6,10 @@ export default defineConfig({
   build: {
     emptyOutDir: false,
     lib: {
-      entry: resolve(__dirname, 'src/main.ts'),
-      fileName: 'main',
+      entry: {
+        main: resolve(__dirname, 'src/main.ts'),
+        oxc: resolve(__dirname, 'src/oxc.ts'),
+      },
       formats: ['es'],
     },
     rolldownOptions: {
