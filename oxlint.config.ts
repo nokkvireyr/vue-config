@@ -1,2 +1,2 @@
-import { oxlintConfig } from './dist/main.js';
+import { oxlintConfig } from './dist/oxc.js';
 export default oxlintConfig();

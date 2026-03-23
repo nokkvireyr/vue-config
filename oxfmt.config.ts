@@ -1,3 +1,3 @@
-import { oxfmtConfig } from './dist/main.js';
+import { oxfmtConfig } from './dist/oxc.js';
 
 export default oxfmtConfig();
