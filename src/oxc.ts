@@ -1,2 +1,2 @@
-export * from './oxlint/oxlint';
-export * from './oxfmt/oxfmt';
+export * from './oxc/oxlint/oxlint';
+export * from './oxc/oxfmt/oxfmt';
