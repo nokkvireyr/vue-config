@@ -13,10 +13,11 @@ export const oxlintConfig = ({
   globals = {} as OxlintGlobals,
   ignorePatterns = [] as string[],
   overrides = [] as NonNullable<OxlintConfig['overrides']>,
+  vue = true,
 } = {}): OxlintConfig => ({
   plugins: [
-    'typescript',
-    'vue',
+    'typescript' as const,
+    ...(vue ? (['vue'] as const) : []),
     ...(plugins || []).filter((p) => p !== 'typescript' && p !== 'vue').filter(Boolean),
   ],
   categories: {
@@ -37,7 +38,7 @@ export const oxlintConfig = ({
     ],
     'typescript/no-explicit-any': 'off',
     'typescript/ban-ts-comment': 'off',
-    'vue/multi-word-component-names': 'off',
+    ...(vue ? { 'vue/multi-word-component-names': 'off' } : {}),
     ...rules,
   },
   env: { browser: true },

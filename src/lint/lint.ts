@@ -1,9 +1,17 @@
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
-import pluginVue from 'eslint-plugin-vue';
-import gb from 'globals';
-import eslintConfigPrettier from 'eslint-config-prettier';
+import { createRequire } from 'node:module';
 import type { Linter } from 'eslint';
+
+const require = createRequire(import.meta.url);
+
+const optionalRequire = <T>(id: string): T | undefined => {
+  try {
+    return require(id) as T;
+  } catch {
+    return undefined;
+  }
+};
 
 export type OptionRules = 'off' | 'warn' | 'error' | 'never';
 export type Rules = Record<
@@ -23,21 +31,59 @@ export const eslintConfig = ({
   rules = {} as Rules,
   ignores = [] as string[],
   oxlintPlugin = undefined as OxlintPlugin | undefined,
-} = {}) =>
-  tseslint.config(
+  vue = false,
+} = {}) => {
+  const pluginVue = vue
+    ? optionalRequire<{ configs: Record<string, Linter.Config[]> }>('eslint-plugin-vue')
+    : undefined;
+  const gb = optionalRequire<{ browser?: Record<string, 'readonly' | 'writable'> }>('globals');
+  const eslintConfigPrettier = optionalRequire<Linter.Config>('eslint-config-prettier');
+  const prettierConfig =
+    eslintConfigPrettier && !vue
+      ? {
+          ...eslintConfigPrettier,
+          rules: Object.fromEntries(
+            Object.entries(eslintConfigPrettier.rules ?? {}).filter(
+              ([ruleName]) => !ruleName.startsWith('vue/')
+            )
+          ),
+        }
+      : eslintConfigPrettier;
+  const vueRules = pluginVue
+    ? {
+        'vue/multi-word-component-names': 'off',
+        'vue/camelcase': 'error',
+        'vue/attribute-hyphenation': ['error', 'never'],
+        'vue/custom-event-name-casing': ['error', 'camelCase'],
+        'vue/v-on-event-hyphenation': ['error', 'never', { autofix: true }],
+        'vue/html-self-closing': [
+          'warn',
+          {
+            html: {
+              void: 'always',
+              normal: 'always',
+            },
+            svg: 'always',
+            math: 'always',
+          },
+        ],
+      }
+    : {};
+
+  return tseslint.config(
     // @ts-ignore
     { ignores: ['**/dist', ...ignores] },
     {
       extends: [
         eslint.configs.recommended,
         ...tseslint.configs.recommended,
-        ...pluginVue.configs['flat/recommended'],
+        ...(pluginVue?.configs['flat/recommended'] ?? []),
       ],
       files: ['**/*.{ts,vue,js}'],
       languageOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
-        globals: { ...gb.browser, ...globals },
+        globals: { ...(gb?.browser ?? {}), ...globals },
         parserOptions: {
           parser: tseslint.parser,
         },
@@ -55,28 +101,14 @@ export const eslintConfig = ({
           },
         ],
         'no-undef': 'off',
-        'vue/multi-word-component-names': 'off',
         'prefer-const': 'error',
-        'vue/camelcase': 'error',
-        'vue/attribute-hyphenation': ['error', 'never'],
-        'vue/custom-event-name-casing': ['error', 'camelCase'],
-        'vue/v-on-event-hyphenation': ['error', 'never', { autofix: true }],
         '@typescript-eslint/ban-ts-comment': 'off',
         '@typescript-eslint/no-explicit-any': 'off',
-        'vue/html-self-closing': [
-          'warn',
-          {
-            html: {
-              void: 'always',
-              normal: 'always',
-            },
-            svg: 'always',
-            math: 'always',
-          },
-        ],
+        ...(vueRules as any),
         ...rules,
       },
     },
-    eslintConfigPrettier,
+    ...(prettierConfig ? [prettierConfig] : []),
     ...(oxlintPlugin ? [oxlintPlugin.configs['flat/recommended']] : [])
   );
+};

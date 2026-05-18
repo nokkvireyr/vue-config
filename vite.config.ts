@@ -13,9 +13,12 @@ export default defineConfig({
       formats: ['es'],
     },
     rolldownOptions: {
-      external: Object.keys(packageJson.peerDependencies).map(
-        (key) => new RegExp(`^${key}(/.*|$)`)
-      ),
+      external: [
+        /^node:.*/,
+        ...Object.keys(packageJson.peerDependencies).map(
+          (key) => new RegExp(`^${key}(/.*|$)`)
+        ),
+      ],
     },
   },
 });
