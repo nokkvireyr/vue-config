@@ -38,7 +38,6 @@ export const oxlintConfig = ({
     ],
     'typescript/no-explicit-any': 'off',
     'typescript/ban-ts-comment': 'off',
-    ...(vue ? { 'vue/multi-word-component-names': 'off' } : {}),
     ...rules,
   },
   env: { browser: true },
