@@ -3,9 +3,9 @@ on:
   push:
     # branches: ['*']
     branches-ignore:
-      - 'main'
+      - "main"
     # Publish semver tags as releases.
-    tags: ['v*.*.*']
+    tags: ["v*.*.*"]
 
 jobs:
   # Push the pacakge.json version to a variable
@@ -17,7 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          node-version: '20.x'
+          node-version: "20.x"
       - name: Get package version
         id: package-version
         run: echo "version=$(node -p "require('./package.json').version")" >> $GITHUB_OUTPUT
@@ -44,11 +44,11 @@ jobs:
       # Setup .npmrc file to publish to GitHub Packages
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
-          registry-url: 'https://npm.pkg.github.com'
+          node-version: 24
+          registry-url: "https://npm.pkg.github.com"
           # Defaults to the user or organization that owns the workflow file
-          scope: '@nokkvireyr'
-      - run: 'pnpm install --frozen-lockfile'
+          scope: "@nokkvireyr"
+      - run: "pnpm install --frozen-lockfile"
         env:
           NODE_AUTH_TOKEN: ${{ github.token }}
       - run: pnpm build
